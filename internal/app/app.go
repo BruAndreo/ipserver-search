@@ -2,15 +2,15 @@ package app
 
 import (
 	"fmt"
-	"log"
-	"net"
 	"os"
 
 	"github.com/urfave/cli"
 )
 
+const FLAG string = "host"
+
 var HOST_FLAG = cli.StringFlag{
-	Name: "host",
+	Name: FLAG,
 }
 
 var IP_COMMAND cli.Command = cli.Command{
@@ -38,17 +38,14 @@ func Generate() *cli.App {
 }
 
 func searchIpByHost(context *cli.Context) {
-	host := context.String("host")
+	host := context.String(FLAG)
 
 	if isInvalidHost(host) {
 		fmt.Println("Invalid host passed")
 		os.Exit(0)
 	}
 
-	ips, err := net.LookupIP(host)
-	if err != nil {
-		log.Fatalln("Error: ", err.Error())
-	}
+	ips := SearchIP(host)
 
 	for _, ip := range ips {
 		fmt.Println("=>", ip)
@@ -56,20 +53,17 @@ func searchIpByHost(context *cli.Context) {
 }
 
 func searchServerByHost(context *cli.Context) {
-	host := context.String("host")
+	host := context.String(FLAG)
 
 	if isInvalidHost(host) {
 		fmt.Println("Invalid host passed")
 		os.Exit(0)
 	}
 
-	servers, err := net.LookupNS(host)
-	if err != nil {
-		log.Fatalln("Error: ", err.Error())
-	}
+	servers := SearchServer(host)
 
 	for _, server := range servers {
-		fmt.Println("=>", server.Host)
+		fmt.Println("=>", server)
 	}
 }
 
