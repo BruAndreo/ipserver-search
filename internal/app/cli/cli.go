@@ -1,7 +1,8 @@
-package app
+package cli
 
 import (
 	"fmt"
+	"ipserver-search/internal/app/domain"
 	"os"
 
 	"github.com/urfave/cli"
@@ -40,33 +41,29 @@ func Generate() *cli.App {
 func searchIpByHost(context *cli.Context) {
 	host := context.String(FLAG)
 
-	if isInvalidHost(host) {
-		fmt.Println("Invalid host passed")
+	err, ips := domain.SearchIpByHost(host)
+	if err != nil {
+		fmt.Println("Erro:", err.Error())
 		os.Exit(0)
 	}
 
-	ips := SearchIP(host)
-
-	for _, ip := range ips {
-		fmt.Println("=>", ip)
-	}
+	display(ips)
 }
 
 func searchServerByHost(context *cli.Context) {
 	host := context.String(FLAG)
 
-	if isInvalidHost(host) {
-		fmt.Println("Invalid host passed")
+	err, servers := domain.SearchServerByHost(host)
+	if err != nil {
+		fmt.Println("Erro:", err.Error())
 		os.Exit(0)
 	}
 
-	servers := SearchServer(host)
-
-	for _, server := range servers {
-		fmt.Println("=>", server)
-	}
+	display(servers)
 }
 
-func isInvalidHost(host string) bool {
-	return len(host) < 4
+func display(itens []string) {
+	for _, item := range itens {
+		fmt.Println("=>", item)
+	}
 }
