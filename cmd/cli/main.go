@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"ipserver-search/app"
+	"ipserver-search/internal/app"
 	"log"
 	"os"
 )
