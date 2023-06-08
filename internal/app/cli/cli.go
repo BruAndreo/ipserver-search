@@ -41,7 +41,7 @@ func Generate() *cli.App {
 func searchIpByHost(context *cli.Context) {
 	host := context.String(FLAG)
 
-	err, ips := domain.SearchIpByHost(host)
+	ips, err := domain.SearchIpByHost(host)
 	if err != nil {
 		fmt.Println("Erro:", err.Error())
 		os.Exit(0)
@@ -53,7 +53,7 @@ func searchIpByHost(context *cli.Context) {
 func searchServerByHost(context *cli.Context) {
 	host := context.String(FLAG)
 
-	err, servers := domain.SearchServerByHost(host)
+	servers, err := domain.SearchServerByHost(host)
 	if err != nil {
 		fmt.Println("Erro:", err.Error())
 		os.Exit(0)
